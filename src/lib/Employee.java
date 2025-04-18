@@ -32,6 +32,22 @@ public class Employee {
 	public enum Gender {
 		MALE, FEMALE
 	}
+
+	public enum Grade {
+		GRADE1(3000000),
+		GRADE2(5000000),
+		GRADE3(7000000);
+	
+		private final int baseSalary;
+	
+		Grade(int baseSalary) {
+			this.baseSalary = baseSalary;
+		}
+	
+		public int getBaseSalary() {
+			return baseSalary;
+		}
+	}
 	
 	public Employee(String employeeId, String firstName, String lastName, String idNumber, String address, int yearJoined, int monthJoined, int dayJoined, boolean isForeigner, Gender gender) {
 		this.employeeId = employeeId;
@@ -61,24 +77,10 @@ public class Employee {
 	 * Jika pegawai adalah warga negara asing gaji bulanan diperbesar sebanyak 50%
 	 */
 	
-	public void setMonthlySalary(int grade) {	
-		if (grade == 1) {
-			monthlySalary = 3000000;
-			if (isForeigner) {
-				monthlySalary = (int) (3000000 * 1.5);
-			}
-		}else if (grade == 2) {
-			monthlySalary = 5000000;
-			if (isForeigner) {
-				monthlySalary = (int) (3000000 * 1.5);
-			}
-		}else if (grade == 3) {
-			monthlySalary = 7000000;
-			if (isForeigner) {
-				monthlySalary = (int) (3000000 * 1.5);
-			}
-		}
-	}
+	 public void setMonthlySalary(Grade grade) {
+		int baseSalary = grade.getBaseSalary();
+		this.monthlySalary = isForeigner ? (int) (baseSalary * 1.5) : baseSalary;
+	 }
 	
 	public void setAnnualDeductible(int deductible) {	
 		this.annualDeductible = deductible;
