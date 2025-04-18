@@ -2,6 +2,7 @@ package lib;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,11 +26,8 @@ public class Employee {
 	private int otherMonthlyIncome;
 	private int annualDeductible;
 	
-	private String spouseName;
-	private String spouseIdNumber;
-
-	private List<String> childNames;
-	private List<String> childIdNumbers;
+	private Spouse spouse;
+	private List<Child> children;
 
 	public enum Gender {
 		MALE, FEMALE
@@ -47,10 +45,17 @@ public class Employee {
 		this.isForeigner = isForeigner;
 		this.gender = gender;
 		
-		childNames = new LinkedList<String>();
-		childIdNumbers = new LinkedList<String>();
+		this.children = new ArrayList<>();
 	}
 	
+	public void setSpouse(String name, String idNumber) {
+		this.spouse = new Spouse(name, idNumber);
+	}
+	
+	public void addChild(String childName, String childIdNumber) {
+		this.children.add(new Child(childName, childIdNumber));
+	}
+
 	/**
 	 * Fungsi untuk menentukan gaji bulanan pegawai berdasarkan grade kepegawaiannya (grade 1: 3.000.000 per bulan, grade 2: 5.000.000 per bulan, grade 3: 7.000.000 per bulan)
 	 * Jika pegawai adalah warga negara asing gaji bulanan diperbesar sebanyak 50%
@@ -83,15 +88,7 @@ public class Employee {
 		this.otherMonthlyIncome = income;
 	}
 	
-	public void setSpouse(String spouseName, String spouseIdNumber) {
-		this.spouseName = spouseName;
-		this.spouseIdNumber = idNumber;
-	}
 	
-	public void addChild(String childName, String childIdNumber) {
-		childNames.add(childName);
-		childIdNumbers.add(childIdNumber);
-	}
 	
 	public int getAnnualIncomeTax() {
 		
@@ -104,6 +101,26 @@ public class Employee {
 			monthWorkingInYear = 12;
 		}
 		
-		return TaxFunction.calculateTax(monthlySalary, otherMonthlyIncome, monthWorkingInYear, annualDeductible, spouseIdNumber.equals(""), childIdNumbers.size());
+		return TaxFunction.calculateTax(monthlySalary, otherMonthlyIncome, monthWorkingInYear, annualDeductible, spouse.idNumber.equals(""), children.size());
+	}
+
+	public static class Spouse {
+		private String name;
+		private String idNumber;
+
+		public Spouse(String name, String idNumber) {
+			this.name = name;
+			this.idNumber = idNumber;
+		}
+	}
+
+	public static class Child {
+		private String name;
+		private String idNumber;
+
+		public Child(String name, String idNumber) {
+			this.name = name;
+			this.idNumber = idNumber;
+		}
 	}
 }
